@@ -16,7 +16,7 @@ const suggestedPrompts = [
 export default function WelcomeScreen({ onSelectPrompt }: WelcomeScreenProps) {
   return (
     <div className="welcome-screen">
-      <h1 className="logo">Hi, I'm Thomas. Let's chat!</h1>
+      <h1 className="logo">Hi, I&apos;m Thomas. Let&apos;s chat!</h1>
       
       <div className="suggested-prompts">
         {suggestedPrompts.map((prompt) => (

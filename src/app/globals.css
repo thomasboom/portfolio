@@ -41,6 +41,9 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .welcome-screen {
@@ -209,6 +212,10 @@ body {
   overflow-x: auto;
   margin: 12px 0;
   border: 1px solid var(--border-color);
+  max-width: 100%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .message-content code {
@@ -221,6 +228,8 @@ body {
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.875rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .message-content a {
@@ -236,6 +245,7 @@ body {
   width: 100%;
   margin: 0 auto;
   padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -388,6 +398,20 @@ body {
   }
 }
 
+@media (max-width: 1024px) {
+  .welcome-screen {
+    max-width: 700px;
+  }
+
+  .chat-container {
+    max-width: 700px;
+  }
+
+  .input-wrapper {
+    max-width: 700px;
+  }
+}
+
 @media (max-width: 768px) {
   .welcome-screen {
     padding: 16px;
@@ -403,7 +427,7 @@ body {
   }
 
   .suggested-prompts {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px;
   }
 
@@ -413,5 +437,187 @@ body {
 
   .chat-container {
     padding: 16px;
+  }
+
+  .message-content {
+    max-width: 80%;
+  }
+
+  #chat-input {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .welcome-screen {
+    padding: 12px;
+  }
+
+  .logo {
+    font-size: 1.75rem;
+    margin-bottom: 32px;
+  }
+
+  .greeting {
+    font-size: 1.125rem;
+    margin-bottom: 24px;
+  }
+
+  .suggested-prompts {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .prompt-card {
+    padding: 14px;
+    font-size: 0.9rem;
+  }
+
+  .prompt-card .material-symbols-rounded {
+    font-size: 1.125rem;
+  }
+
+  .chat-container {
+    padding: 12px;
+    gap: 20px;
+  }
+
+  .message {
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  .message-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+
+  .message-content {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    max-width: 85%;
+  }
+
+  .input-wrapper {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .input-container {
+    padding: 10px 14px;
+  }
+
+  #send-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  #send-button .material-symbols-rounded {
+    font-size: 1.125rem;
+  }
+
+  .action-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .action-btn .material-symbols-rounded {
+    font-size: 1.125rem;
+  }
+
+  .footer-text {
+    font-size: 0.7rem;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-screen {
+    padding: 8px;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+  }
+
+  .greeting {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .prompt-card {
+    padding: 12px;
+    font-size: 0.875rem;
+    gap: 10px;
+  }
+
+  .chat-container {
+    padding: 8px;
+    gap: 16px;
+  }
+
+  .message-content {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    max-width: 90%;
+  }
+
+  .message-content pre {
+    padding: 12px;
+    margin: 8px 0;
+    overflow-x: auto;
+  }
+
+  .message-content code {
+    font-size: 0.8rem;
+  }
+
+  .input-wrapper {
+    padding: 10px 8px;
+  }
+
+  .input-container {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  #chat-input {
+    padding: 6px 0;
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .suggested-prompts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .prompt-card {
+    transition: background 0.1s ease;
+  }
+
+  .prompt-card:active {
+    background: var(--hover-bg);
+    transform: scale(0.98);
+  }
+
+  .action-btn {
+    transition: background 0.1s ease;
+  }
+
+  .action-btn:active {
+    background: var(--hover-bg);
+  }
+
+  #send-button {
+    transition: transform 0.1s ease;
+  }
+
+  #send-button:active:not(:disabled) {
+    transform: scale(0.95);
   }
 }

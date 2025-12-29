@@ -267,7 +267,7 @@ export default function Home() {
         </div>
 
         <div className="footer-text">
-          This <a href="https://github.com/thomasboom/portfolio" target="_blank" rel="noopener noreferrer">website</a> uses <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer">AI</a>. It might hallucinate things, so don't take it that serious.
+          This <a href="https://github.com/thomasboom/portfolio" target="_blank" rel="noopener noreferrer">website</a> uses <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer">AI</a>. It might hallucinate things, so don&apos;t take it that serious.
         </div>
       </div>
     </div>
