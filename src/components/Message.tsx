@@ -29,13 +29,14 @@ export default function Message({ content, isUser = false }: MessageProps) {
           components={{
             p: ({ children }) => <p>{children}</p>,
             a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>,
-            code: ({ inline, className, children }) => {
-              if (inline) {
-                return <code>{children}</code>;
+            code: ({ className, children, ...props }) => {
+              const hasLanguage = className && /language-/.test(className || '');
+              if (!hasLanguage && typeof children === 'string' && !children.includes('\n')) {
+                return <code {...props}>{children}</code>;
               }
               return (
                 <pre>
-                  <code className={className}>{children}</code>
+                  <code className={className} {...props}>{children}</code>
                 </pre>
               );
             },

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Message as MessageType } from '@/types';
 import WelcomeScreen from '@/components/WelcomeScreen';
+import BlogLink from '@/components/BlogLink';
 
 const Message = dynamic(() => import('@/components/Message'), { ssr: false });
 const TypingIndicator = dynamic(() => import('@/components/TypingIndicator'), { ssr: false });
@@ -227,6 +228,10 @@ export default function Home() {
 
   return (
     <div className="main-container">
+      <div className="nav-header">
+        <BlogLink />
+      </div>
+
       {!showChat ? (
         <WelcomeScreen onSelectPrompt={handlePromptSelect} />
       ) : (
