@@ -100,13 +100,17 @@ export default function Home() {
     const updatedHistory = [...conversationHistory, userMessage];
     setConversationHistory(updatedHistory);
     setIsTyping(true);
+    
+    let accumulatedContent = '';
+    let hasAddedAssistantMessage = false;
 
     try {
       const requestBody = {
         model: 'tngtech/deepseek-r1t2-chimera:free',
         messages: updatedHistory,
         max_tokens: 2000,
-        temperature: 0.7
+        temperature: 0.7,
+        stream: true
       };
 
       console.log('Sending request to OpenRouter...', {
@@ -149,27 +153,64 @@ export default function Home() {
           errorMessage += '. Model not found. Try a different model.';
         }
         
-        throw new Error(errorMessage);
+        setIsTyping(false);
+        setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${errorMessage}. Please try again.` }]);
+        return;
       }
 
-      const data = await response.json();
-      const assistantMessage: MessageType = {
-        role: 'assistant',
-        content: data.choices[0].message.content
-      };
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
 
-      setIsTyping(false);
-      setMessages(prev => [...prev, assistantMessage]);
-      setConversationHistory(prev => [...prev, assistantMessage]);
+      if (!reader) {
+        throw new Error('No response body');
+      }
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') {
+              break;
+            }
+
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content || '';
+              
+              if (content) {
+                if (!hasAddedAssistantMessage) {
+                  setMessages(prev => [...prev, { role: 'assistant', content }]);
+                  hasAddedAssistantMessage = true;
+                } else {
+                  setMessages(prev => {
+                    const newMessages = [...prev];
+                    newMessages[newMessages.length - 1] = { role: 'assistant', content: accumulatedContent + content };
+                    return newMessages;
+                  });
+                }
+                accumulatedContent += content;
+                setIsTyping(false);
+              }
+            } catch (e) {
+            }
+          }
+        }
+      }
+
+      if (hasAddedAssistantMessage) {
+        setConversationHistory(prev => [...prev, { role: 'assistant', content: accumulatedContent }]);
+      }
     } catch (error) {
       console.error('Error:', error);
       setIsTyping(false);
       const errorMsg = error instanceof Error ? error.message : 'Unknown error occurred';
-      const errorMessage: MessageType = {
-        role: 'assistant',
-        content: `Error: ${errorMsg}. Please try again.`
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${errorMsg}. Please try again.` }]);
     }
   };
 
