@@ -97,13 +97,14 @@ export default function Home() {
 
     const userMessage: MessageType = { role: 'user', content: textToSend };
     setMessages(prev => [...prev, userMessage]);
-    setConversationHistory(prev => [...prev, userMessage]);
+    const updatedHistory = [...conversationHistory, userMessage];
+    setConversationHistory(updatedHistory);
     setIsTyping(true);
 
     try {
       const requestBody = {
         model: 'tngtech/deepseek-r1t2-chimera:free',
-        messages: conversationHistory,
+        messages: updatedHistory,
         max_tokens: 2000,
         temperature: 0.7
       };
