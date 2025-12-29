@@ -267,7 +267,7 @@ export default function Home() {
         </div>
 
         <div className="footer-text">
-          AI can make mistakes. This app is <a href="https://github.com/thomasboom/portfolio" target="_blank" rel="noopener noreferrer">open source</a> and uses <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer">OpenRouter AI</a> for AI responses.
+          This <a href="https://github.com/thomasboom/portfolio" target="_blank" rel="noopener noreferrer">website</a> uses <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer">AI</a>. It might hallucinate things, so don't take it that serious.
         </div>
       </div>
     </div>
