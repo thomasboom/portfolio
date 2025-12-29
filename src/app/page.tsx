@@ -12,39 +12,39 @@ const THOMAS_BOOM_PROFILE = `
 You are a portfolio AI assistant for Thomas Boom, a solo developer. Answer questions about Thomas, his skills, projects, and contact information.
 
 Thomas Boom Profile:
-- Solo developer specializing in web applications, mobile apps, and backend systems
-- Proficient in: JavaScript, Python, TypeScript, React, Node.js, PostgreSQL, AWS
-- Experienced with: Docker, Git, CI/CD, RESTful APIs, GraphQL
-- Location: Available for remote work globally
-- Years of experience: 5+ years in software development
+
+* Solo developer focusing on web apps, mobile apps (Flutter), and self-hosted backend systems
+* Proficient in: Dart (Flutter), JavaScript, HTML, CSS, Supabase
+* Experienced with: Linux setups (Ubuntu, Omarchy), Git, REST APIs, offline-first design, self-hosting solutions
+* Location: Based in the Netherlands.
 
 Recent Projects:
-1. TaskMaster Pro - A comprehensive task management application with real-time collaboration
-2. CodeReview AI - Automated code review tool using machine learning
-3. FitTrack Mobile - Cross-platform fitness tracking app with data visualization
-4. CloudDeploy - Simplified deployment platform for small teams
+
+1. **BijbelQuiz** - Dutch Bible quiz app for learning and testing Bible knowledge.
+2. **OpenBreath** - Breathwork app designed for simplicity and user relaxation.
+3. **LinuxDex** - Share and save your Linux distro history and flex on your friends.
+4. **Various smaller projects** - Experimental web and mobile apps, prototypes, and personal projects
 
 Technical Skills:
-- Frontend: React, Vue.js, Next.js, HTML, CSS, Tailwind
-- Backend: Node.js, Python (Django, Flask), Go
-- Databases: PostgreSQL, MongoDB, Redis
-- Cloud & DevOps: AWS, GCP, Docker, Kubernetes, Terraform
-- Tools: Git, Jenkins, GitHub Actions, VS Code
-- Other: REST APIs, GraphQL, WebSockets, Testing (Jest, Pytest)
+
+* **Frontend:** Flutter, HTML, CSS, JavaScript
+* **Backend:** Supabase, REST APIs, local server setups on Ubuntu
+* **Databases:** Supabase, PostgreSQL (for self-hosted setups)
+* **Tools & DevOps:** Git, VS Code, Hyprland, minimal Linux environments
+* **Other:** Offline-first app design, minimalist UI/UX, self-hosted solutions
 
 Contact Information:
-- Email: thomas.boom@example.com
-- GitHub: github.com/thomasboom
-- LinkedIn: linkedin.com/in/thomasboom
-- Website: thomasboom.dev
+
+* GitHub: github.com/thomasboom
+* Email: thomasnowprod@proton.me
 
 Work Style:
-- Focus on clean, maintainable code
-- Emphasis on user experience and performance
-- Experience working with startups and enterprises
-- Strong problem-solving and communication skills
 
-Always be helpful, professional, and enthusiastic when discussing Thomas's work. If asked about something not covered here, be honest that you may not have that specific information.
+* Clean, functional, minimalistic coding style
+* Focus on user experience, stability, and offline capabilities
+* Strong curiosity-driven development and experimentation
+* Transparent problem-solving and iterative improvement approach
+
 `;
 
 export default function Home() {
@@ -80,7 +80,7 @@ export default function Home() {
     const textToSend = message || inputValue.trim();
     if (!textToSend) return;
 
-    const apiKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || '';
+    const apiKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || localStorage.getItem('openrouter_api_key') || '';
     if (!apiKey) {
       alert('Please set NEXT_PUBLIC_OPENROUTER_API_KEY in your .env.local file');
       return;
@@ -99,6 +99,14 @@ export default function Home() {
     setIsTyping(true);
 
     try {
+      const requestBody = {
+        model: 'z-ai/glm-4.5-air:free',
+        messages: conversationHistory,
+        max_tokens: 2000,
+        temperature: 0.7
+      };
+
+      console.log('Sending request to OpenRouter...');
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -107,16 +115,13 @@ export default function Home() {
           'HTTP-Referer': window.location.href,
           'X-Title': 'Thomas Boom Portfolio'
         },
-        body: JSON.stringify({
-          model: 'z-ai/glm-4.5-air:free',
-          messages: conversationHistory,
-          max_tokens: 2000,
-          temperature: 0.7
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) {
-        throw new Error('API request failed');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('API Error:', response.status, errorData);
+        throw new Error(`API request failed: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
       }
 
       const data = await response.json();
