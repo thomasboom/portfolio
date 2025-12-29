@@ -174,20 +174,6 @@ export default function Home() {
       )}
 
       <div className="input-wrapper">
-        <div className="input-actions">
-          {['attach_file', 'search', 'school', 'image', 'mic'].map((icon) => (
-            <button
-              key={icon}
-              className="action-btn"
-              title={icon}
-            >
-              <span className="material-symbols-rounded">
-                {icon}
-              </span>
-            </button>
-          ))}
-        </div>
-
         <div className="input-container">
           <textarea
             ref={textareaRef}
