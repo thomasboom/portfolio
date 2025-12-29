@@ -26,6 +26,12 @@ body.light {
   --disabled-color: #e5e5e5;
 }
 
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   background: var(--bg-primary);
@@ -196,6 +202,7 @@ body {
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
+  margin-top: auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
