@@ -102,13 +102,18 @@ export default function Home() {
 
     try {
       const requestBody = {
-        model: 'z-ai/glm-4.5-air:free',
+        model: 'mistralai/devstral-2512:free',
         messages: conversationHistory,
         max_tokens: 2000,
         temperature: 0.7
       };
 
-      console.log('Sending request to OpenRouter...');
+      console.log('Sending request to OpenRouter...', {
+        model: requestBody.model,
+        messageCount: conversationHistory.length,
+        hasApiKey: !!apiKey
+      });
+      
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -122,8 +127,28 @@ export default function Home() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('API Error:', response.status, errorData);
-        throw new Error(`API request failed: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+        console.error('API Error Details:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorData
+        });
+        
+        let errorMessage = `API request failed: ${response.status}`;
+        if (errorData.error?.message) {
+          errorMessage += ` - ${errorData.error.message}`;
+        } else if (errorData.message) {
+          errorMessage += ` - ${errorData.message}`;
+        }
+        
+        if (response.status === 401) {
+          errorMessage += '. Invalid API key. Check your NEXT_PUBLIC_OPENROUTER_API_KEY.';
+        } else if (response.status === 402) {
+          errorMessage += '. Insufficient credits. Add credits to your OpenRouter account.';
+        } else if (response.status === 404) {
+          errorMessage += '. Model not found. Try a different model.';
+        }
+        
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -138,9 +163,10 @@ export default function Home() {
     } catch (error) {
       console.error('Error:', error);
       setIsTyping(false);
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error occurred';
       const errorMessage: MessageType = {
         role: 'assistant',
-        content: 'Sorry, there was an error processing your request. Please try again.'
+        content: `Error: ${errorMsg}. Please try again.`
       };
       setMessages(prev => [...prev, errorMessage]);
     }
