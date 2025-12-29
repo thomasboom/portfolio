@@ -170,7 +170,7 @@ async function sendMessage() {
         'X-Title': 'Thomas Boom Portfolio'
       },
       body: JSON.stringify({
-        model: 'openai/gpt-4o',
+        model: 'z-ai/glm-4.5-air:free',
         messages: conversationHistory,
         max_tokens: 2000,
         temperature: 0.7

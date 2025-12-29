@@ -1,4 +1,0 @@
-// API Configuration - Local file (excluded from git)
-// Copy this from config.js.example and add your actual API key
-
-const API_KEY = 'your-openrouter-api-key-here';

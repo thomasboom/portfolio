@@ -17,12 +17,23 @@ A portfolio website for Thomas Boom, built as a ChatGPT UI clone using plain HTM
 
 ## Setup
 
-1. Open `index.html` in your web browser
+1. Install Node.js (required for setup script)
 
 2. Set your OpenRouter API key:
-   - Copy `config.js.example` to `config.local.js`
-   - Add your OpenRouter API key to `config.local.js`
-   - Refresh the page
+   ```bash
+   # Copy the example .env file
+   cp .env.example .env
+
+   # Edit .env and add your API key:
+   OPENROUTER_API_KEY=your-api-key-here
+
+   # Run the setup script to generate config.local.js
+   node setup-env.js
+   ```
+
+3. Open `index.html` in your web browser
+
+**Note:** `.env` and `config.local.js` are excluded from git by `.gitignore` to keep your API key secure.
 
 Alternatively, you can use localStorage (not recommended):
    - Open browser console (F12)
@@ -41,6 +52,11 @@ Alternatively, you can use localStorage (not recommended):
 - `index.html`: Main HTML structure with centered layout
 - `styles.css`: All styling matching current ChatGPT design
 - `script.js`: JavaScript functionality and API integration
+- `.env`: Environment variables (create from .env.example)
+- `.env.example`: Template environment variables file
+- `setup-env.js`: Script to convert .env to config.local.js
+- `config.local.js`: Auto-generated from .env (do not edit manually)
+- `.gitignore`: Excludes sensitive files from version control
 
 ## Customization
 
