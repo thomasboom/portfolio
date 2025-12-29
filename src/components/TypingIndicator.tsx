@@ -6,7 +6,11 @@ export default function TypingIndicator() {
   return (
     <div className="message">
       <div className="message-avatar">
-        TB
+        <img
+          src="/thomas-avatar.jpg"
+          alt="Thomas Boom"
+          className="avatar-image"
+        />
       </div>
       <div className="message-content">
         <div className="typing-indicator">
