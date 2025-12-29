@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface MessageProps {
   content: string;
@@ -8,35 +10,39 @@ interface MessageProps {
 }
 
 export default function Message({ content, isUser = false }: MessageProps) {
-  const formatMessage = (text: string) => {
-    if (!text) return '';
-
-    let formatted = text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-
-    formatted = formatted.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
-      return `<pre><code class="${lang || ''}">${code.trim()}</code></pre>`;
-    });
-
-    formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-    formatted = formatted.replace(/\n\n/g, '</p><p>');
-    formatted = formatted.replace(/\n/g, '<br>');
-
-    return `<p>${formatted}</p>`;
-  };
-
   return (
     <div className={`message ${isUser ? 'user' : ''}`}>
       <div className="message-avatar">
-        {isUser ? 'You' : 'TB'}
+        {isUser ? (
+          'You'
+        ) : (
+          <img 
+            src="/thomas-avatar.jpg" 
+            alt="Thomas Boom"
+            className="avatar-image"
+          />
+        )}
       </div>
-      <div 
-        className="message-content"
-        dangerouslySetInnerHTML={{ __html: formatMessage(content) }}
-      />
+      <div className="message-content">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            p: ({ children }) => <p>{children}</p>,
+            code: ({ inline, className, children }) => {
+              if (inline) {
+                return <code>{children}</code>;
+              }
+              return (
+                <pre>
+                  <code className={className}>{children}</code>
+                </pre>
+              );
+            },
+          }}
+        >
+          {content}
+        </ReactMarkdown>
+      </div>
     </div>
   );
 }
