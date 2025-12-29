@@ -1,0 +1,5 @@
+// API Configuration
+// Copy this file to config.local.js and add your API key there
+// The local file will be ignored by git
+
+const API_KEY = '';

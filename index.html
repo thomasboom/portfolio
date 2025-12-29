@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thomas Boom - Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"/>
+</head>
+<body class="dark">
+  <div class="main-container">
+    <div class="welcome-screen" id="welcome-screen">
+      <h1 class="logo">Thomas Boom</h1>
+      <h2 class="greeting">What can I help with?</h2>
+      
+      <div class="suggested-prompts">
+        <div class="prompt-card" data-prompt="Tell me about yourself">
+          <span class="material-symbols-rounded">person</span>
+          <span>Tell me about yourself</span>
+        </div>
+        <div class="prompt-card" data-prompt="What projects have you worked on?">
+          <span class="material-symbols-rounded">work</span>
+          <span>What projects have you worked on?</span>
+        </div>
+        <div class="prompt-card" data-prompt="What are your technical skills?">
+          <span class="material-symbols-rounded">code</span>
+          <span>What are your technical skills?</span>
+        </div>
+        <div class="prompt-card" data-prompt="How can I contact you?">
+          <span class="material-symbols-rounded">email</span>
+          <span>How can I contact you?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-container" id="chat-container" style="display: none;">
+    </div>
+
+    <div class="input-wrapper">
+      <div class="input-actions">
+        <button class="action-btn" title="Attach file">
+          <span class="material-symbols-rounded">attach_file</span>
+        </button>
+        <button class="action-btn" title="Search">
+          <span class="material-symbols-rounded">search</span>
+        </button>
+        <button class="action-btn" title="Study mode">
+          <span class="material-symbols-rounded">school</span>
+        </button>
+        <button class="action-btn" title="Create image">
+          <span class="material-symbols-rounded">image</span>
+        </button>
+        <button class="action-btn" title="Voice">
+          <span class="material-symbols-rounded">mic</span>
+        </button>
+      </div>
+      
+      <div class="input-container">
+        <textarea id="chat-input" placeholder="Message Thomas..." spellcheck="false" rows="1"></textarea>
+        <button id="send-button" disabled>
+          <span class="material-symbols-rounded">arrow_upward</span>
+        </button>
+      </div>
+      
+      <div class="footer-text">
+        By messaging Thomas Boom, you agree to his <a href="#">Terms</a> and have read his <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
