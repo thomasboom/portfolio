@@ -102,7 +102,7 @@ export default function Home() {
 
     try {
       const requestBody = {
-        model: 'mistralai/devstral-2512:free',
+        model: 'tngtech/deepseek-r1t2-chimera:free',
         messages: conversationHistory,
         max_tokens: 2000,
         temperature: 0.7
