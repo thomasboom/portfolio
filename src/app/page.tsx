@@ -134,12 +134,38 @@ export default function Home() {
         throw new Error('No response body');
       }
 
+      let buffer = '';
+
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done) {
+          if (buffer.trim()) {
+            const lines = buffer.split('\n');
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+                if (data === '[DONE]') {
+                  break;
+                }
+                try {
+                  const parsed = JSON.parse(data);
+                  const content = parsed.choices?.[0]?.delta?.content || '';
+                  if (content) {
+                    accumulatedContent += content;
+                  }
+                } catch (e) {
+                }
+              }
+            }
+          }
+          break;
+        }
 
         const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
+        buffer += chunk;
+
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
 
         for (const line of lines) {
           if (line.startsWith('data: ')) {
@@ -153,17 +179,17 @@ export default function Home() {
               const content = parsed.choices?.[0]?.delta?.content || '';
               
               if (content) {
+                accumulatedContent += content;
                 if (!hasAddedAssistantMessage) {
-                  setMessages(prev => [...prev, { role: 'assistant', content }]);
+                  setMessages(prev => [...prev, { role: 'assistant', content: accumulatedContent }]);
                   hasAddedAssistantMessage = true;
                 } else {
                   setMessages(prev => {
                     const newMessages = [...prev];
-                    newMessages[newMessages.length - 1] = { role: 'assistant', content: accumulatedContent + content };
+                    newMessages[newMessages.length - 1] = { role: 'assistant', content: accumulatedContent };
                     return newMessages;
                   });
                 }
-                accumulatedContent += content;
                 setIsTyping(false);
               }
             } catch (e) {
