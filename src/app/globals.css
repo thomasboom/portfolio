@@ -223,6 +223,15 @@ body {
   font-size: 0.875rem;
 }
 
+.message-content a {
+  color: #ffffff !important;
+  text-decoration: underline;
+}
+
+.message-content a:visited {
+  color: #ffffff !important;
+}
+
 .input-wrapper {
   width: 100%;
   margin: 0 auto;

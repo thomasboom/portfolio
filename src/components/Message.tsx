@@ -28,6 +28,7 @@ export default function Message({ content, isUser = false }: MessageProps) {
           remarkPlugins={[remarkGfm]}
           components={{
             p: ({ children }) => <p>{children}</p>,
+            a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>,
             code: ({ inline, className, children }) => {
               if (inline) {
                 return <code>{children}</code>;
