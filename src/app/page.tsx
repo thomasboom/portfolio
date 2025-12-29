@@ -67,10 +67,6 @@ export default function Home() {
   }, [messages, isTyping]);
 
   const autoResizeTextarea = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
-    }
   };
 
   const handlePromptSelect = (prompt: string) => {
