@@ -15,25 +15,33 @@ export default function BlogPage() {
         </div>
 
         <div className="posts-grid">
-          {blogPosts.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className="post-card">
-              <article>
-                <h2 className="post-title">{post.title}</h2>
-                <p className="post-excerpt">{post.excerpt}</p>
-                <div className="post-meta">
-                  <time className="post-date">{post.date}</time>
-                  <span className="post-read-time">{post.readTime}</span>
-                </div>
-                <div className="post-tags">
-                  {post.tags.map((tag) => (
-                    <span key={tag} className="post-tag">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            </Link>
-          ))}
+          {blogPosts.length > 0 ? (
+            blogPosts.map((post) => (
+              <Link key={post.slug} href={`/blog/${post.slug}`} className="post-card">
+                <article>
+                  <h2 className="post-title">{post.title}</h2>
+                  <p className="post-excerpt">{post.excerpt}</p>
+                  <div className="post-meta">
+                    <time className="post-date">{post.date}</time>
+                    <span className="post-read-time">{post.readTime}</span>
+                  </div>
+                  <div className="post-tags">
+                    {post.tags.map((tag) => (
+                      <span key={tag} className="post-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              </Link>
+            ))
+          ) : (
+            <div className="no-posts">
+              <span className="material-symbols-rounded">article</span>
+              <p>No blogs yet</p>
+              <span className="no-posts-subtitle">Check back soon for updates</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

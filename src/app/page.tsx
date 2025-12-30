@@ -30,6 +30,7 @@ export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -39,7 +40,19 @@ export default function Home() {
     }
   }, [messages, isTyping]);
 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.remove('light');
+    } else {
+      document.body.classList.add('light');
+    }
+  }, [isDarkMode]);
+
   const autoResizeTextarea = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
   };
 
   const handlePromptSelect = (prompt: string) => {
@@ -222,10 +235,23 @@ export default function Home() {
     }
   };
 
+  const toggleTheme = () => {
+    setIsDarkMode(prev => !prev);
+  };
+
   return (
     <div className="main-container">
       <div className="nav-header">
         <BlogLink />
+        <button
+          onClick={toggleTheme}
+          className="theme-toggle-btn"
+          aria-label="Toggle theme"
+        >
+          <span className="material-symbols-rounded">
+            {isDarkMode ? 'light_mode' : 'dark_mode'}
+          </span>
+        </button>
       </div>
 
       {!showChat ? (
