@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { blogPosts } from '@/data/posts';
 
 export default function BlogPage() {
+
   return (
     <div className="main-container">
       <div className="blog-page">
@@ -10,8 +11,10 @@ export default function BlogPage() {
             <span className="material-symbols-rounded">arrow_back</span>
             Back to Chat
           </Link>
-          <h1 className="blog-title">Blog</h1>
-          <p className="blog-subtitle">Thoughts on development, design, and technology</p>
+          <div className="header-title-group">
+            <h1 className="blog-title">Blog</h1>
+            <p className="blog-subtitle">Thoughts on development, design, and technology</p>
+          </div>
         </div>
 
         <div className="posts-grid">
@@ -26,7 +29,7 @@ export default function BlogPage() {
                     <span className="post-read-time">{post.readTime}</span>
                   </div>
                   <div className="post-tags">
-                    {post.tags.map((tag) => (
+                    {post.tags.map((tag: string) => (
                       <span key={tag} className="post-tag">
                         {tag}
                       </span>
