@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Thomas Boom</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fragment+Mono:wght@400&display=swap');
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            :root {
+                --bg: #0f0f0f;
+                --text: #f0f0f0;
+                --accent: #ff3c00;
+                --accent-dim: rgba(255, 60, 0, 0.1);
+                --border: #222;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                font-family: "Fragment Mono", monospace;
+                background: var(--bg);
+                color: var(--text);
+                overflow-x: hidden;
+            }
+
+            .container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                min-height: 100vh;
+            }
+
+            .progress-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 3px;
+                background: var(--accent);
+                z-index: 1000;
+                transition: width 0.1s ease-out;
+            }
+
+            .left {
+                padding: 48px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                border-right: 1px solid var(--border);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+            }
+
+            .right {
+                padding: 48px;
+            }
+
+            .name {
+                font-size: clamp(48px, 10vw, 120px);
+                line-height: 0.85;
+                letter-spacing: -0.04em;
+                margin-bottom: 24px;
+            }
+
+            .name span {
+                display: block;
+                opacity: 0;
+                transform: translateY(20px);
+                animation: fadeInUp 0.8s ease forwards;
+            }
+
+            .name span:nth-child(1) { animation-delay: 0.2s; }
+            .name span:nth-child(2) { animation-delay: 0.4s; }
+
+            @keyframes fadeInUp {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .name .accent {
+                color: var(--accent);
+            }
+
+            .meta {
+                font-size: 14px;
+                color: #666;
+                line-height: 1.8;
+                opacity: 0;
+                transform: translateY(20px);
+                animation: fadeInUp 0.8s ease 0.6s forwards;
+            }
+
+            .meta span {
+                display: block;
+                margin-top: 8px;
+            }
+
+            .nav {
+                margin-top: 48px;
+                opacity: 0;
+                animation: fadeInUp 0.8s ease 0.8s forwards;
+            }
+
+            .nav a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-size: 16px;
+                color: var(--text);
+                text-decoration: none;
+                padding: 16px 0;
+                border-bottom: 1px solid var(--border);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .nav a::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--accent);
+                transform: scaleY(0);
+                transition: transform 0.3s ease;
+            }
+
+            .nav a:hover {
+                padding-left: 16px;
+                color: var(--accent);
+            }
+
+            .nav a:hover::before {
+                transform: scaleY(1);
+            }
+
+            .nav-number {
+                color: #444;
+                font-size: 12px;
+                min-width: 20px;
+            }
+
+            .nav a:hover .nav-number {
+                color: var(--accent);
+            }
+
+            .section {
+                margin-bottom: 80px;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.6s ease;
+            }
+
+            .section.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .section:last-child {
+                margin-bottom: 0;
+            }
+
+            .section-header {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+
+            .section-title {
+                font-size: 12px;
+                color: var(--accent);
+                letter-spacing: 0.1em;
+            }
+
+            .section-line {
+                flex: 1;
+                height: 1px;
+                background: var(--border);
+            }
+
+            .work-item {
+                margin-bottom: 48px;
+                padding: 24px;
+                border: 1px solid var(--border);
+                transition: all 0.3s ease;
+            }
+
+            .work-item:hover {
+                border-color: var(--accent);
+                background: var(--accent-dim);
+                transform: translateX(8px);
+            }
+
+            .work-item h3 {
+                font-size: 28px;
+                font-weight: 400;
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .work-item h3 a {
+                color: var(--text);
+                text-decoration: none;
+                transition: color 0.2s ease;
+            }
+
+            .work-item h3 a:hover {
+                color: var(--accent);
+            }
+
+            .work-item h3::after {
+                content: '↗';
+                font-size: 16px;
+                color: var(--accent);
+                opacity: 0;
+                transform: translate(-8px, 8px);
+                transition: all 0.3s ease;
+            }
+
+            .work-item:hover h3::after {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+
+            .work-item p {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 12px;
+            }
+
+            .work-item .tech {
+                font-size: 12px;
+                color: var(--accent);
+                display: flex;
+                gap: 12px;
+            }
+
+            .work-item .tech span:not(:last-child)::after {
+                content: '·';
+                color: var(--border);
+                margin-left: 12px;
+            }
+
+            .skills-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .skill {
+                padding: 20px;
+                border: 1px solid var(--border);
+                font-size: 14px;
+                transition: all 0.3s ease;
+                cursor: default;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .skill::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: var(--accent);
+                opacity: 0;
+                transform: translateY(100%);
+                transition: all 0.3s ease;
+                z-index: -1;
+            }
+
+            .skill:hover {
+                border-color: var(--accent);
+                color: var(--bg);
+            }
+
+            .skill:hover::before {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .skill-name {
+                margin-bottom: 4px;
+                font-weight: 600;
+            }
+
+            .skill-desc {
+                font-size: 11px;
+                color: #666;
+            }
+
+            .skill:hover .skill-desc {
+                color: rgba(0,0,0,0.6);
+            }
+
+            .about-text {
+                font-size: 22px;
+                line-height: 1.7;
+                max-width: 520px;
+                padding: 24px;
+                border: 1px solid var(--border);
+                transition: all 0.3s ease;
+            }
+
+            .about-text:hover {
+                border-color: var(--accent);
+            }
+
+            .about-text strong {
+                color: var(--accent);
+                font-weight: 400;
+            }
+
+            .contact-list {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .contact-item {
+                padding: 16px 0;
+            }
+
+            .contact-item a {
+                font-size: 24px;
+                color: var(--text);
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                transition: all 0.3s ease;
+            }
+
+            .contact-item a::before {
+                content: '→';
+                color: var(--accent);
+                opacity: 0;
+                transform: translateX(-8px);
+                transition: all 0.3s ease;
+            }
+
+            .contact-item a:hover {
+                color: var(--accent);
+                padding-left: 8px;
+            }
+
+            .contact-item a:hover::before {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .footer {
+                margin-top: 80px;
+                padding-top: 24px;
+                border-top: 1px solid var(--border);
+                font-size: 12px;
+                color: #666;
+                display: flex;
+                gap: 24px;
+            }
+
+            @media (max-width: 900px) {
+                .container {
+                    grid-template-columns: 1fr;
+                }
+
+                .left {
+                    position: relative;
+                    height: auto;
+                    padding: 32px;
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                }
+
+                .right {
+                    padding: 32px;
+                }
+
+                .skills-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .about-text {
+                    font-size: 18px;
+                }
+
+                .work-item h3 {
+                    font-size: 24px;
+                }
+
+                .contact-item a {
+                    font-size: 20px;
+                }
+            }
+
+            @media (max-width: 500px) {
+                .left {
+                    padding: 24px;
+                }
+
+                .right {
+                    padding: 24px;
+                }
+
+                .skills-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="progress-bar" id="progress"></div>
+
+        <div class="container">
+            <div class="left">
+                <div>
+                    <h1 class="name">
+                        <span>Thomas</span>
+                        <span class="accent">Boom</span>
+                    </h1>
+                    <p class="meta">
+                        Developer
+                        <span>Based in The Netherlands</span>
+                        <span>Building mobile apps & web tools</span>
+                    </p>
+                </div>
+                <nav class="nav">
+                    <a href="#work"><span class="nav-number">01</span> Work</a>
+                    <a href="#skills"><span class="nav-number">02</span> Skills</a>
+                    <a href="#about"><span class="nav-number">03</span> About</a>
+                    <a href="#contact"><span class="nav-number">04</span> Contact</a>
+                </nav>
+            </div>
+
+            <div class="right">
+                <section class="section" id="work">
+                    <div class="section-header">
+                        <h2 class="section-title">01 — SELECTED WORK</h2>
+                        <span class="section-line"></span>
+                    </div>
+
+                    <article class="work-item">
+                        <h3><a href="https://bijbelquiz.app">BijbelQuiz</a></h3>
+                        <p>Test your Bible knowledge with engaging quizzes.</p>
+                        <div class="tech"><span>Flutter</span><span>Dart</span><span>Supabase</span><span>Gemini API</span></div>
+                    </article>
+
+                    <article class="work-item">
+                        <h3><a href="https://breathspace-app.vercel.app">BreathSpace</a></h3>
+                        <p>Your space. Slow down anytime with breathing exercises</p>
+                        <div class="tech"><span>Flutter</span><span>Dart</span><span>Gemini API</span></div>
+                    </article>
+
+                    <article class="work-item">
+                        <h3><a href="https://github.com/thomasboom/LinuxDex">LinuxDex</a></h3>
+                        <p>Share your Linux distro history with friends to flex on 'em </p>
+                        <div class="tech"><span>Flutter</span><span>Dart</span><span>Supabase</span></div>
+                    </article>
+                </section>
+
+                <section class="section" id="skills">
+                    <div class="section-header">
+                        <h2 class="section-title">02 — SKILLS</h2>
+                        <span class="section-line"></span>
+                    </div>
+                    <div class="skills-grid">
+                        <div class="skill">
+                            <div class="skill-name">Flutter</div>
+                            <div class="skill-desc">Mobile development</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">TypeScript</div>
+                            <div class="skill-desc">Web development</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">Kotlin</div>
+                            <div class="skill-desc">Android development</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">Supabase</div>
+                            <div class="skill-desc">Backend & database</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">Dart</div>
+                            <div class="skill-desc">Programming language</div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">JavaScript</div>
+                            <div class="skill-desc">Web development</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="about">
+                    <div class="section-header">
+                        <h2 class="section-title">03 — ABOUT</h2>
+                        <span class="section-line"></span>
+                    </div>
+                    <p class="about-text">
+                        Developer from The Netherlands who enjoys building useful applications.
+                        Focus on <strong>user experiences</strong>, and tools that
+                        genuinely <strong>help</strong> people in their daily lives.
+                    </p>
+                </section>
+
+                <section class="section" id="contact">
+                    <div class="section-header">
+                        <h2 class="section-title">04 — CONTACT</h2>
+                        <span class="section-line"></span>
+                    </div>
+                    <div class="contact-list">
+                        <div class="contact-item">
+                            <a href="mailto:thomasnowprod@proton.me">thomasnowprod@proton.me</a>
+                        </div>
+                        <div class="contact-item">
+                            <a href="https://github.com/thomasboom">github.com/thomasboom</a>
+                        </div>
+                        <div class="contact-item">
+                            <a href="https://bsky.app/profile/thomasnowprod.bsky.social">@thomasnowprod</a>
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="footer">
+                    <span>© 2026</span>
+                    <span>The Netherlands</span>
+                </footer>
+            </div>
+        </div>
+
+        <script>
+            const progress = document.getElementById('progress');
+            const sections = document.querySelectorAll('.section');
+
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                progress.style.width = scrollPercent + '%';
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            document.querySelectorAll('.nav a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
