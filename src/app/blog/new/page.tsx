@@ -23,6 +23,13 @@ interface BlogPost {
 }
 
 export default function BlogEditor() {
+  const calculateReadTime = (content: string): string => {
+    const wordsPerMinute = 200;
+    const words = content.trim().split(/\s+/).filter(Boolean).length;
+    const minutes = Math.ceil(words / wordsPerMinute);
+    return minutes > 0 ? `${minutes} min read` : '1 min read';
+  };
+
   const [formData, setFormData] = useState<FormData>({
     title: '',
     slug: '',
@@ -104,7 +111,7 @@ export default function BlogEditor() {
               <textarea
                 id="content"
                 value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, content: e.target.value, readTime: calculateReadTime(e.target.value) })}
                 required
                 placeholder="Write your post content in Markdown..."
                 rows={20}
@@ -125,13 +132,14 @@ export default function BlogEditor() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="readTime">Read Time</label>
+                <label htmlFor="readTime">Read Time (auto-calculated)</label>
                 <input
                   id="readTime"
                   type="text"
                   value={formData.readTime}
-                  onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
-                  placeholder="5 min read"
+                  readOnly
+                  placeholder="Calculated automatically"
+                  className="read-only-input"
                 />
               </div>
             </div>
