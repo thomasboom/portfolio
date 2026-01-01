@@ -20,7 +20,7 @@ export default function Work() {
 
       <article className="work-item">
         <h3><a href="https://github.com/thomasboom/LinuxDex" target="_blank" rel="noopener noreferrer">LinuxDex</a></h3>
-        <p>Share your Linux distro history with friends to flex on 'em</p>
+        <p>Share your Linux distro history with friends to flex on &apos;em</p>
         <div className="tech"><span>Flutter</span><span>Dart</span><span>Supabase</span></div>
       </article>
     </section>
