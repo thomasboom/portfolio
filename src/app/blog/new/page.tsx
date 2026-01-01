@@ -5,11 +5,9 @@ import Link from 'next/link';
 
 interface FormData {
   title: string;
-  slug: string;
   excerpt: string;
   content: string;
   tags: string;
-  readTime: string;
 }
 
 interface BlogPost {
@@ -32,11 +30,9 @@ export default function BlogEditor() {
 
   const [formData, setFormData] = useState<FormData>({
     title: '',
-    slug: '',
     excerpt: '',
     content: '',
-    tags: '',
-    readTime: ''
+    tags: ''
   });
   const [generatedJson, setGeneratedJson] = useState<string>('');
 
@@ -44,12 +40,12 @@ export default function BlogEditor() {
     e.preventDefault();
 
     const post: BlogPost = {
-      slug: formData.slug || formData.title.toLowerCase().replace(/\s+/g, '-'),
+      slug: formData.title.toLowerCase().replace(/\s+/g, '-'),
       title: formData.title,
       excerpt: formData.excerpt,
       content: formData.content,
       date: new Date().toISOString().split('T')[0],
-      readTime: formData.readTime || '1 min read',
+      readTime: calculateReadTime(formData.content),
       tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean)
     };
 
@@ -77,20 +73,20 @@ export default function BlogEditor() {
                 id="title"
                 type="text"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
                 placeholder="Enter post title"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="slug">Slug</label>
+              <label htmlFor="tags">Tags</label>
               <input
-                id="slug"
+                id="tags"
                 type="text"
-                value={formData.slug}
-                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                placeholder="post-slug"
+                value={formData.tags}
+                onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                placeholder="react, nextjs, typescript"
               />
             </div>
 
@@ -111,37 +107,12 @@ export default function BlogEditor() {
               <textarea
                 id="content"
                 value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value, readTime: calculateReadTime(e.target.value) })}
+                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 required
                 placeholder="Write your post content in Markdown..."
                 rows={20}
                 className="markdown-editor"
               />
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="tags">Tags</label>
-                <input
-                  id="tags"
-                  type="text"
-                  value={formData.tags}
-                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                  placeholder="react, nextjs, typescript"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="readTime">Read Time (auto-calculated)</label>
-                <input
-                  id="readTime"
-                  type="text"
-                  value={formData.readTime}
-                  readOnly
-                  placeholder="Calculated automatically"
-                  className="read-only-input"
-                />
-              </div>
             </div>
 
             <div className="form-actions">
