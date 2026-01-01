@@ -369,6 +369,106 @@ body {
     gap: 24px;
 }
 
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.links-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text);
+    text-decoration: none;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.links-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--border);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.links-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.links-link:hover {
+    padding-left: 28px;
+    border-color: var(--accent);
+    background: var(--accent-dim);
+}
+
+.links-link:hover::before {
+    transform: scaleY(1);
+}
+
+.links-link:hover .links-icon {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+.links-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.links-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.links-header .name {
+    font-size: clamp(32px, 8vw, 64px);
+    margin-bottom: 16px;
+}
+
+.links-header .meta {
+    opacity: 1;
+    animation: none;
+    transform: none;
+}
+
+.back-link {
+    margin-top: 48px;
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--accent);
+}
+
 @media (max-width: 900px) {
     .container {
         grid-template-columns: 1fr;
@@ -414,5 +514,9 @@ body {
 
     .skills-grid {
         grid-template-columns: 1fr;
+    }
+
+    .links-container {
+        padding: 24px;
     }
 }
