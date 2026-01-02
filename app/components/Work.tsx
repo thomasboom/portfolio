@@ -23,6 +23,12 @@ export default function Work() {
         <p>Share your Linux distro history with friends to flex on &apos;em</p>
         <div className="tech"><span>Flutter</span><span>Dart</span><span>Supabase</span></div>
       </article>
+
+      <article className="work-item">
+        <h3><a href="https://github.com/ThomasNowProductions/Codenamr" target="_blank" rel="noopener noreferrer">Codenamr</a></h3>
+        <p>A dead simple and lightning fast CLI for generating codenames</p>
+        <div className="tech"><span>Rust</span><span>CLI</span></div>
+      </article>
     </section>
   );
 }
