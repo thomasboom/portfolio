@@ -12,16 +12,22 @@ export default function Work() {
         <div className="tech"><span>Flutter</span><span>Dart</span><span>Supabase</span><span>Gemini API</span></div>
       </article>
 
-      <article className="work-item">
+      {/* <article className="work-item">
         <h3><a href="https://breathspace-app.vercel.app" target="_blank" rel="noopener noreferrer">BreathSpace</a></h3>
         <p>Your space. Slow down anytime with breathing exercises</p>
         <div className="tech"><span>Flutter</span><span>Dart</span><span>Gemini API</span></div>
+      </article> */}
+
+      <article className="work-item">
+        <h3><a href="https://github.com/ThomasNowProductions/Clickshare" target="_blank" rel="noopener noreferrer">Clickshare</a></h3>
+        <p>A digital business card to share your contact info instantly</p>
+        <div className="tech"><span>Flutter</span><span>Dart</span><span>Supabase</span></div>
       </article>
 
       <article className="work-item">
-        <h3><a href="https://github.com/thomasboom/LinuxDex" target="_blank" rel="noopener noreferrer">LinuxDex</a></h3>
-        <p>Share your Linux distro history with friends to flex on &apos;em</p>
-        <div className="tech"><span>Flutter</span><span>Dart</span><span>Supabase</span></div>
+        <h3><a href="https://github.com/ThomasNowProductions/yam_launcher" target="_blank" rel="noopener noreferrer">YAM Launcher</a></h3>
+        <p>Yet Another Minimalist launcher for Android</p>
+        <div className="tech"><span>Flutter</span><span>Dart</span></div>
       </article>
 
       <article className="work-item">
